@@ -33,14 +33,17 @@ func (c *Core) Start(n int) {
 
 func (c *Core) CreateProcess() {
 	process := new(Process)
-	process.PageTable.Entries = make([]*PTE, 5) // 5 is rand val
-	process.NReq = 125 //rand val from
+	addressSpace := random(c.AddressSpaceMin, c.AddressSpaceMax)
+	process.PageTable.Entries = make([]*PTE, addressSpace) // 5 is rand val
+	reqPageCount := random(c.ReqPageMin, c.ReqPageMax)
+	process.NReq = reqPageCount //rand val from
 	c.RunQ = append(c.RunQ, process)
 }
 
 func (c *Core) GenerateWorkingSet(process *Process) {
-	process.WorkingSet.PageIndexies = make([]int, 12) //12 is rand val of working set
-	for i := 0; i < 12; i++ {
-		process.WorkingSet.PageIndexies[i] = 5 // form 0 to PTE count
+	workingSetCount := random(c.ReqWorkSetMin, c.ReqWorkSetMax)
+	process.WorkingSet.PageIndexies = make([]int, workingSetCount) //12 is rand val of working set
+	for i := 0; i < workingSetCount; i++ {
+		process.WorkingSet.PageIndexies[i] = i // form 0 to PTE count
 	}
 }

@@ -6,5 +6,5 @@ import (
 
 func main() {
 	c := &core.Core{}
-	c.Start()
+	c.Start(1000)
 }
