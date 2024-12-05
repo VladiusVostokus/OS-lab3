@@ -1,7 +1,10 @@
 package main
 
-import "fmt"
+import (
+	core "OS_lab3/Core"
+)
 
 func main() {
-	fmt.Println("Hello World!")
+	c := &core.Core{}
+	c.Start()
 }
