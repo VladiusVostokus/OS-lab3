@@ -1,5 +1,6 @@
 package core
 
-type WorkingPage struct {
-	
+type WorkingSet struct {
+	PageIndexies []int
+	NReq int
 }
