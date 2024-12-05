@@ -7,4 +7,5 @@ import (
 func main() {
 	c := &core.Core{}
 	c.Start(1000)
+	c.CreateProcess()
 }
