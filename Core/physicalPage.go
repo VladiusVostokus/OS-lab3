@@ -1,9 +1,5 @@
 package core
 
-type PhyіsicalPage struct {
+type PhysicalPage struct {
 	PTE *PTE
 }
-
-type freePages []*PhyіsicalPage
-
-type busyPages []*PhyіsicalPage
