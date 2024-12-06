@@ -8,6 +8,12 @@ type Process struct {
 
 func (p *Process) GetPTE() *PTE {
     // 90 % із WorkingSet.Indexies , 10% - будь який номер з PageTable.PTE.lenth
-    return p.PageTable.Entries[0] // some index, rand
+    //probability := random(0, 10)
+    //if (probability >= 9) {
+    //   index := p.WorkingSet.PageIndexies[0]
+    //    return p.PageTable.Entries[index]
+    //}
+    randIndex := random(0, len(p.PageTable.Entries))
+    return p.PageTable.Entries[randIndex] // some index, rand
 }
 
