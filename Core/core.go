@@ -48,3 +48,13 @@ func (c *Core) GenerateWorkingSet(process *Process) {
 		process.WorkingSet.PageIndexies[i] = i // form 0 to PTE count
 	}
 }
+
+func (c *Core) PageFault(pageTable *PageTable, idx int) {
+	if (len(c.FreePages) > 0) {
+		physPage := c.FreePages[idx]
+		physPage.PTE = pageTable.Entries[idx]
+		c.BusyPages = append(c.BusyPages, physPage)
+	} else {
+		// Algoritm of page replacement
+	}
+}

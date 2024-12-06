@@ -1,0 +1,59 @@
+
+    simulation_time, quantum_time -- number of access to memory
+    generate_page_idex() -- random idex from WS (90%) or page table (10%)
+
+    for 0..simulation_time {
+        proc = next element from RunQ
+        for 0..quantum_time {
+            idx = proc.generate_page_idex();
+            mmu.access_page(proc->page_table, idx);
+        }
+    }
+
+// Machine-dependent data, virtual page attributes
+struct PTE {
+    bool P, R, M;
+    int PPN;
+}
+
+struct page_table {
+    PTE entries[]; // <-- virtual page attributes
+}
+
+// Physical page descriptor
+struct phys_page {
+    int number;
+    PPE* pte;
+};
+
+mmu::access_page(PageTable* page_table, int idx)
+{
+    log_message(process access virutal page N)
+    if (page_table[idx].P == false) {
+        log_message(vitrual page is not mammped)
+        kernel.page_fault(page_table, idx);
+    }
+    page_table[idx].R = true;
+    if (70%) // read or write
+        page_table[idx].M = true;
+}
+
+kernel::page_fault(PageTable* page_table, int idx)
+{
+    if (kernel.free_phys_page.is_not_empty()) {
+        phys_page = kernel.free_phys_page.get(); // get any free element from list
+        kernel.busy_phys_page.append(phys_page); // add this page to busy list
+    } else {
+        // Find page for replacement from kernel.phys_page_busy
+        // If Random page replacement algorithm
+        // phys_page = random from kernel.busy_phys_page
+        // If WSClock page replacement algorithm
+        // get page according to this algorithm
+        //       if (phys->pte->R)
+        phys_page = ...
+        phys_page.pte.P = false;
+    }
+    phys_page.pte = &page_table[idx];
+    page_table[idx].PPN = phys_page.number();
+    phys_page.pte.P = true;
+}
