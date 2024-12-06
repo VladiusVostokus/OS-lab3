@@ -1,6 +1,6 @@
 package core
 
 type PhysicalPage struct {
-	number int
+	Number int
 	PTE *PTE
 }
