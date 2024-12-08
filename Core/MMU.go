@@ -4,7 +4,7 @@ type MMU struct {}
 
 func (m *MMU) AccessPage(pageTable *PageTable, c *Core, idx int) {
 	if (pageTable.Entries[idx].P == false) {
-		//c.PageFault()
+		c.PageFault(pageTable, idx)
 	}
 	pageTable.Entries[idx].R = true
 	writeProb := random(0, 10)

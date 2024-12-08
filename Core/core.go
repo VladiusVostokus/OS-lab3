@@ -50,11 +50,18 @@ func (c *Core) GenerateWorkingSet(process *Process) {
 }
 
 func (c *Core) PageFault(pageTable *PageTable, idx int) {
+	var physPage **PhysicalPage
 	if (len(c.FreePages) > 0) {
-		physPage := c.FreePages[idx]
-		physPage.PTE = pageTable.Entries[idx]
-		c.BusyPages = append(c.BusyPages, physPage)
+		index := random(0, len(c.FreePages))
+		physPage = &c.FreePages[index]
+		c.BusyPages = append(c.BusyPages, *physPage)
 	} else {
 		// Algoritm of page replacement
+		index := random(0, len(c.BusyPages))
+		physPage = &c.BusyPages[index]
+		(*physPage).PTE.P = false
 	}
+	(*physPage).PTE = pageTable.Entries[idx]
+	pageTable.Entries[idx].PNN = (*physPage).Number
+	(*physPage).PTE.P = true
 }
