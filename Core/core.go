@@ -18,6 +18,11 @@ func (c *Core) Start(n int) {
 	fmt.Println("Start system...")
 	c.RunQ = make([]*Process, 0)
 	c.FreePages = make([]*PhysicalPage, n)
+	for i := 0; i < n; i++ {
+		pte := &PTE{}
+		physPage := &PhysicalPage{PTE: pte, Number: n}
+		c.FreePages = append(c.FreePages, physPage)
+	}
 	c.AddressSpaceMin = 10
 	c.AddressSpaceMax = 20
 	c.ReqPageMin = 100
