@@ -7,7 +7,7 @@ import (
 func main() {
 	c := &core.Core{}
 	mmu := &core.MMU{}
-	c.Start(1000)
+	c.Start(100)
 	c.CreateProcess()
 	proc := c.GetProcess()
 	c.GenerateWorkingSet(proc)
