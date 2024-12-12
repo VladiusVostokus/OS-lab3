@@ -9,14 +9,14 @@ type Process struct {
 }
 
 func (p *Process) GetPTEIndex() int {
-    // 90 % із WorkingSet.Indexies , 10% - будь який номер з PageTable.PTE.lenth
-    //probability := random(0, 10)
-    //if (probability >= 9) {
-    //    index := p.WorkingSet.PageIndexies[0]
-    //    return p.PageTable.Entries[index]
-    //}
-    fmt.Println("LEN OF PROCCESS PAGE TABLE", len(p.PageTable.Entries))
+    probability := random(0, 10)
+    if (probability <= 9) {
+        randIndex := random(0, len(p.WorkingSet.PageIndexies))
+        fmt.Println("Get random PTE form working set", randIndex)
+        return randIndex
+    }
     randIndex := random(0, len(p.PageTable.Entries))
+    fmt.Println("Get random PTE form page table", randIndex)
     return randIndex // some index, rand
 }
 
