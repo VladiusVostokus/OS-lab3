@@ -66,9 +66,11 @@ func (c *Core) GetProcess() *Process {
 func (c *Core) PageFault(pageTable *PageTable, idx int) {
 	var physPage **PhysicalPage
 	if (len(c.FreePages) > 0) {
+		fmt.Println("LEN OF FREE PAGES ARRAY",len(c.FreePages))
 		index := random(0, len(c.FreePages))
 		physPage = &c.FreePages[index]
 		c.BusyPages = append(c.BusyPages, *physPage)
+		c.removeFreePage(index)
 		fmt.Println("Map free page")
 	} else {
 		// Algoritm of page replacement
@@ -80,4 +82,8 @@ func (c *Core) PageFault(pageTable *PageTable, idx int) {
 	(*physPage).PTE = pageTable.Entries[idx]
 	pageTable.Entries[idx].PNN = (*physPage).Number
 	(*physPage).PTE.P = true
+}
+
+func (c *Core) removeFreePage(page int){
+    c.FreePages =  append(c.FreePages[:page], c.FreePages[page+1:]...)
 }
