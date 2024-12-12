@@ -1,5 +1,7 @@
 package core
 
+import "fmt"
+
 type Process struct {
     PageTable *PageTable
     NReq int
@@ -13,6 +15,7 @@ func (p *Process) GetPTEIndex() int {
     //    index := p.WorkingSet.PageIndexies[0]
     //    return p.PageTable.Entries[index]
     //}
+    fmt.Println("LEN OF PROCCESS PAGE TABLE", len(p.PageTable.Entries))
     randIndex := random(0, len(p.PageTable.Entries))
     return randIndex // some index, rand
 }

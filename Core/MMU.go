@@ -15,5 +15,8 @@ func (m *MMU) AccessPage(pageTable *PageTable, c *Core, idx int) {
 	writeProb := random(0, 10)
 	if (writeProb >= 7) {
 		pageTable.Entries[idx].M = true
+		fmt.Println("Write to page", idx)
+	} else {
+		fmt.Println("Read from page", idx)
 	}
 }

@@ -18,6 +18,7 @@ func (c *Core) Start(n int) {
 	fmt.Println("Start system...")
 	c.RunQ = make([]*Process, 0)
 	c.FreePages = make([]*PhysicalPage, n)
+	//c.BusyPages = make([]*PhysicalPage, 0)
 		for i := 0; i < n; i++ {
     	pte := &PTE{}
     	physPage := &PhysicalPage{PTE: pte, Number: i}
@@ -71,13 +72,14 @@ func (c *Core) PageFault(pageTable *PageTable, idx int) {
 		physPage = &c.FreePages[index]
 		c.BusyPages = append(c.BusyPages, *physPage)
 		c.removeFreePage(index)
-		fmt.Println("Map free page")
+		fmt.Println("Map free page", idx)
 	} else {
 		// Algoritm of page replacement
+		fmt.Println("LEN OF BUSY PAGES ARRAY",len(c.BusyPages))
 		index := random(0, len(c.BusyPages))
 		physPage = &c.BusyPages[index]
 		(*physPage).PTE.P = false
-		fmt.Println("Replace page")
+		fmt.Println("Replace page", index)
 	}
 	(*physPage).PTE = pageTable.Entries[idx]
 	pageTable.Entries[idx].PNN = (*physPage).Number
