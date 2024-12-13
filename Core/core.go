@@ -12,6 +12,8 @@ type Core struct {
 	ReqPageMax, ReqPageMin int
 	ReqWorkSetMax, ReqWorkSetMin int
 	WorkSetSizeMax, WorkSetSizeMin int
+	//NReqQuantum int - скільки раз він звертається до пам. за 1 раунд обслуговування, може зменшуватися після звернень
+	// додати поле кванту часу роботи процесу(скільки раз він звертається до пам. за 1 раунд обслуговування)
 }
 
 func (c *Core) Start(n int) {
@@ -24,8 +26,9 @@ func (c *Core) Start(n int) {
     	physPage := &PhysicalPage{PTE: pte, Number: i}
     	c.FreePages[i] = physPage
 	}
-	c.AddressSpaceMin = 10
+	c.AddressSpaceMin = 15
 	c.AddressSpaceMax = 20
+	//c.NReqQuantum = 10
 	c.ReqPageMin = 100
 	c.ReqPageMax = 150
 	c.ReqWorkSetMin = 10
@@ -50,6 +53,7 @@ func (c *Core) CreateProcess() {
 	process.NReq = reqPageCount //rand val from
 	c.RunQ = append(c.RunQ, process)
 	fmt.Println("Create process")
+	fmt.Println("LEN OF PROCCESS PAGE TABLE", len(process.PageTable.Entries))
 }
 
 func (c *Core) GenerateWorkingSet(process *Process) {
@@ -58,6 +62,7 @@ func (c *Core) GenerateWorkingSet(process *Process) {
 	for i := 0; i < workingSetCount; i++ {
 		process.WorkingSet.PageIndexies[i] = i // form 0 to PTE count
 	}
+	fmt.Println("LEN OF WORKING SET", len(process.WorkingSet.PageIndexies))
 }
 
 func (c *Core) GetProcess() *Process {
@@ -80,6 +85,11 @@ func (c *Core) PageFault(pageTable *PageTable, idx int) {
 		physPage = &c.BusyPages[index]
 		(*physPage).PTE.P = false
 		fmt.Println("Replace page", index)
+		// NRU
+		// Відсортувати всі фіз. сторінки
+		// NRU = біт звернення + біт модифікації
+		// лекція 22 NRU
+		// Має бути фоновий процес для оновлення статистики(у main)
 	}
 	(*physPage).PTE = pageTable.Entries[idx]
 	pageTable.Entries[idx].PNN = (*physPage).Number
@@ -87,5 +97,5 @@ func (c *Core) PageFault(pageTable *PageTable, idx int) {
 }
 
 func (c *Core) removeFreePage(page int){
-    c.FreePages =  append(c.FreePages[:page], c.FreePages[page+1:]...)
+    c.FreePages = append(c.FreePages[:page], c.FreePages[page+1:]...)
 }
