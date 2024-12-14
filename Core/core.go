@@ -53,7 +53,7 @@ func (c *Core) CreateProcess() {
 	process.NReq = reqPageCount //rand val from
 	c.RunQ = append(c.RunQ, process)
 	fmt.Println("Create process")
-	fmt.Println("LEN OF PROCCESS PAGE TABLE", len(process.PageTable.Entries))
+	fmt.Println("LEN OF PROCCESS №",len(c.RunQ)," PAGE TABLE", len(process.PageTable.Entries))
 }
 
 func (c *Core) GenerateWorkingSet(process *Process) {

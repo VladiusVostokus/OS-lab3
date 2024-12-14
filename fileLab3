@@ -47,7 +47,7 @@ kernel::page_fault(PageTable* page_table, int idx)
         // Find page for replacement from kernel.phys_page_busy
         // If Random page replacement algorithm
         // phys_page = random from kernel.busy_phys_page
-        // If WSClock page replacement algorithm
+        // If NRU page replacement algorithm
         // get page according to this algorithm
         //       if (phys->pte->R)
         phys_page = ...

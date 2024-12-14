@@ -9,12 +9,17 @@ func main() {
 	mmu := &core.MMU{}
 	c.Start(100)
 	c.CreateProcess()
-	proc := c.GetProcess()
-	c.GenerateWorkingSet(proc)
+	c.CreateProcess()
+	c.CreateProcess()
+	for _, proc := range c.RunQ {
+		c.GenerateWorkingSet(proc)
+	}
 	//for proc, _ := range c.
-	for i := 0; i < c.NReqQuantum; i++ {
-		index := proc.GetPTEIndex()
-		mmu.AccessPage(proc.PageTable, c, index)
+	for _, proc := range c.RunQ {
+		for i := 0; i < c.NReqQuantum; i++ {
+			index := proc.GetPTEIndex()
+			mmu.AccessPage(proc.PageTable, c, index)
+		}
 	}
 	/*
 	сounter := 0
