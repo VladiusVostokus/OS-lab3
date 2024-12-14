@@ -13,6 +13,7 @@ type Core struct {
 	ReqWorkSetMax, ReqWorkSetMin     int
 	WorkSetSizeMax, WorkSetSizeMin   int
 	NReqQuantum                      int //- скільки раз він звертається до пам. за 1 раунд обслуговування, може зменшуватися після звернень
+	replacementAlgoritm ReplacementAlgorithm
 	// додати поле кванту часу роботи процесу(скільки раз він звертається до пам. за 1 раунд обслуговування)
 }
 
@@ -20,7 +21,16 @@ func (c *Core) Start(n int) {
 	fmt.Println("Start system...")
 	c.RunQ = make([]*Process, 0)
 	c.FreePages = make([]*PhysicalPage, n)
-	//c.BusyPages = make([]*PhysicalPage, 0)
+
+	chooseAlg := Random(0, 10) 
+	if (chooseAlg > 5) {
+		c.replacementAlgoritm = &RandomAlgorithm{}
+		fmt.Println("RANDOM ALGORITHM USED")
+	} else {
+		c.replacementAlgoritm = &NRUAlgorithm{}
+		fmt.Println("NRU ALGORITHM USED")
+	}
+
 	for i := 0; i < n; i++ {
 		pte := &PTE{}
 		physPage := &PhysicalPage{PTE: pte, Number: i}
@@ -81,15 +91,7 @@ func (c *Core) PageFault(pageTable *PageTable, idx int) {
 	} else {
 		// Algoritm of page replacement
 		fmt.Println("LEN OF BUSY PAGES ARRAY", len(c.BusyPages))
-		index := Random(0, len(c.BusyPages))
-		physPage = &c.BusyPages[index]
-		(*physPage).PTE.P = false
-		fmt.Println("Replace page", index)
-		// NRU
-		// Відсортувати всі фіз. сторінки
-		// NRU = біт звернення + біт модифікації
-		// лекція 22 NRU
-		// Має бути фоновий процес для оновлення статистики(у main)
+		c.replacementAlgoritm.ReplacePage(c, physPage)
 	}
 	(*physPage).PTE = pageTable.Entries[idx]
 	pageTable.Entries[idx].PNN = (*physPage).Number
