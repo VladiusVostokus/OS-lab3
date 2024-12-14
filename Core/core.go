@@ -12,7 +12,7 @@ type Core struct {
 	ReqPageMax, ReqPageMin int
 	ReqWorkSetMax, ReqWorkSetMin int
 	WorkSetSizeMax, WorkSetSizeMin int
-	//NReqQuantum int - скільки раз він звертається до пам. за 1 раунд обслуговування, може зменшуватися після звернень
+    NReqQuantum int //- скільки раз він звертається до пам. за 1 раунд обслуговування, може зменшуватися після звернень
 	// додати поле кванту часу роботи процесу(скільки раз він звертається до пам. за 1 раунд обслуговування)
 }
 
@@ -28,7 +28,7 @@ func (c *Core) Start(n int) {
 	}
 	c.AddressSpaceMin = 15
 	c.AddressSpaceMax = 20
-	//c.NReqQuantum = 10
+	c.NReqQuantum = 10
 	c.ReqPageMin = 100
 	c.ReqPageMax = 150
 	c.ReqWorkSetMin = 10

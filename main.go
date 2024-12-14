@@ -12,7 +12,7 @@ func main() {
 	proc := c.GetProcess()
 	c.GenerateWorkingSet(proc)
 	//for proc, _ := range c.
-	for i := 0; i < proc.NReq; i++ {
+	for i := 0; i < c.NReqQuantum; i++ {
 		index := proc.GetPTEIndex()
 		mmu.AccessPage(proc.PageTable, c, index)
 	}
