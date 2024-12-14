@@ -99,3 +99,15 @@ func (c *Core) PageFault(pageTable *PageTable, idx int) {
 func (c *Core) removeFreePage(page int) {
 	c.FreePages = append(c.FreePages[:page], c.FreePages[page+1:]...)
 }
+
+func (c *Core) UpdateStat() {
+	pagesToUpdate := len(c.BusyPages) / 2
+	if (pagesToUpdate == 0) {
+		return
+	}
+	pageUpdateFrom := Random(0, len(c.BusyPages) - pagesToUpdate)
+	for i := pageUpdateFrom; i <= pageUpdateFrom + pagesToUpdate; i++ {
+		c.BusyPages[i].PTE.R = false
+	}
+	fmt.Println("UPDATE STATE OF PAGES", pageUpdateFrom," - ", pageUpdateFrom + pagesToUpdate)
+}
