@@ -2,6 +2,7 @@ package main
 
 import (
 	core "OS_lab3/Core"
+	"fmt"
 )
 
 func main() {
@@ -14,8 +15,13 @@ func main() {
 	for _, proc := range c.RunQ {
 		c.GenerateWorkingSet(proc)
 	}
-	//for proc, _ := range c.
-	for _, proc := range c.RunQ {
+	for procIndex, _ := range c.RunQ {
+		proc := c.RunQ[procIndex]
+		newWorkingSetProb := core.Random(0, 10)
+		if (newWorkingSetProb > 1) {
+			c.GenerateWorkingSet(proc)
+			fmt.Println("GENERATE NEW WORKING SET FOR PROCESS №", procIndex + 1)
+		}
 		for i := 0; i < c.NReqQuantum; i++ {
 			index := proc.GetPTEIndex()
 			mmu.AccessPage(proc.PageTable, c, index)
