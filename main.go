@@ -15,21 +15,25 @@ func main() {
 	for _, proc := range c.RunQ {
 		c.GenerateWorkingSet(proc)
 	}
-	for procIndex, _ := range c.RunQ {
-		proc := c.RunQ[procIndex]
-		newWorkingSetProb := core.Random(0, 10)
-		if (newWorkingSetProb < 1) {
-			c.GenerateWorkingSet(proc)
-			fmt.Println("GENERATE NEW WORKING SET FOR PROCESS №", procIndex + 1)
-		}
 
-		updateStatProb := core.Random(0, 10)
-		if (updateStatProb < 2) {
-			c.UpdateStat()
-		}
-		for i := 0; i < c.NReqQuantum; i++ {
-			index := proc.GetPTEIndex()
-			mmu.AccessPage(proc.PageTable, c, index)
+	numOfProcWorkSwitches := 3
+	for i := 0; i < numOfProcWorkSwitches; i++ {
+		for procIndex, _ := range c.RunQ {
+			proc := c.RunQ[procIndex]
+			newWorkingSetProb := core.Random(0, 10)
+			if (newWorkingSetProb < 1) {
+				c.GenerateWorkingSet(proc)
+				fmt.Println("GENERATE NEW WORKING SET FOR PROCESS №", procIndex + 1)
+			}
+	
+			updateStatProb := core.Random(0, 10)
+			if (updateStatProb < 2) {
+				c.UpdateStat()
+			}
+			for i := 0; i < c.NReqQuantum; i++ {
+				index := proc.GetPTEIndex()
+				mmu.AccessPage(proc.PageTable, c, index)
+			}
 		}
 	}
 	/*
