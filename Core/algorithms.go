@@ -42,21 +42,24 @@ func (nru *NRUAlgorithm) ReplacePage(c *Core, page **PhysicalPage) {
 		}
 	}
 
-	var index int
+	var pageIndex int
 	if (len(class1) > 0) {
-		index = Random(0, len(class1))
+		index := Random(0, len(class1) - 1)
+		pageIndex = class1[index]
 	} else {
 		if (len(class2) > 0) {
-			index = Random(0, len(class2))
+			index := Random(0, len(class2) - 1)
+			pageIndex = class2[index]
 		} else {
 			if (len(class3) > 0) {
-				index = Random(0, len(class3))
+				index := Random(0, len(class3) - 1)
+				pageIndex = class3[index]
 			}
 		}
 	}
-	page = &c.BusyPages[index]
+	page = &c.BusyPages[pageIndex]
 	(*page).PTE.P = false
-	fmt.Println("Replace page", index)
+	fmt.Println("Replace page", pageIndex)
 	// NRU
 		// Відсортувати всі фіз. сторінки
 		// NRU = біт звернення + біт модифікації
