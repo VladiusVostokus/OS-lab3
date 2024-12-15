@@ -2,11 +2,15 @@ package core
 
 import "fmt"
 
-type MMU struct{}
+type MMU struct{
+	AccessCount, PageFaultCount int
+}
 
 func (m *MMU) AccessPage(pageTable *PageTable, c *Core, idx int) {
 	fmt.Println("Trying to access virtual page num =", idx)
+	m.AccessCount++
 	if pageTable.Entries[idx].P == false {
+		m.PageFaultCount++
 		fmt.Println("Page fault: vitrual page ", idx, " is not mammped")
 		c.PageFault(pageTable, idx)
 	}
