@@ -108,8 +108,9 @@ func (c *Core) UpdateStat() {
 		return
 	}
 	pageUpdateFrom := Random(0, len(c.BusyPages) - pagesToUpdate)
-	for i := pageUpdateFrom; i <= pageUpdateFrom + pagesToUpdate; i++ {
+	pageUpdateTo := pageUpdateFrom + pagesToUpdate
+	for i := pageUpdateFrom; i <= pageUpdateTo; i++ {
 		c.BusyPages[i].PTE.R = false
 	}
-	fmt.Println("UPDATE STATE OF PAGES", pageUpdateFrom," - ", pageUpdateFrom + pagesToUpdate)
+	fmt.Println("UPDATE STATE OF PAGES", pageUpdateFrom," - ", pageUpdateTo)
 }
