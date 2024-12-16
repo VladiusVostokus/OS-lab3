@@ -9,8 +9,8 @@ type Process struct {
 }
 
 func (p *Process) GetPTEIndex() int {
-	probability := Random(0, 10)
-	if probability <= 9 {
+	probability := Random(0, 100)
+	if probability <= 90 {
 		randIndex := Random(0, len(p.WorkingSet.PageIndexies))
 		fmt.Println("Get random PTE form working set", randIndex)
 		return randIndex

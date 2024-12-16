@@ -16,8 +16,8 @@ func (m *MMU) AccessPage(pageTable *PageTable, c *Core, idx int) {
 	}
 	fmt.Println("Regular access to page:", idx)
 	pageTable.Entries[idx].R = true
-	writeProb := Random(0, 10)
-	if writeProb >= 7 {
+	writeProb := Random(0, 100)
+	if writeProb >= 70 {
 		pageTable.Entries[idx].M = true
 		fmt.Println("Write to page", idx)
 	} else {

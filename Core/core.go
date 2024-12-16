@@ -22,8 +22,8 @@ func (c *Core) Start(n int) {
 	c.RunQ = make([]*Process, 0)
 	c.FreePages = make([]*PhysicalPage, n)
 
-	chooseAlg := Random(0, 10) 
-	if (chooseAlg > 5) {
+	chooseAlg := Random(0, 100) 
+	if (chooseAlg >= 50) {
 		c.replacementAlgoritm = &RandomAlgorithm{}
 		fmt.Println("RANDOM ALGORITHM USED")
 	} else {
@@ -36,8 +36,8 @@ func (c *Core) Start(n int) {
 		physPage := &PhysicalPage{PTE: pte, Number: i}
 		c.FreePages[i] = physPage
 	}
-	c.AddressSpaceMin = 15
-	c.AddressSpaceMax = 20
+	c.AddressSpaceMin = 30
+	c.AddressSpaceMax = 40
 	c.NReqQuantum = 10
 	c.ReqPageMin = 100
 	c.ReqPageMax = 150
