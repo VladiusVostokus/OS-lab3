@@ -39,22 +39,4 @@ func main() {
 	fmt.Println("Total count of accesses to pages:", mmu.AccessCount)
 	fmt.Println("Total count of page faults:", mmu.PageFaultCount)
 	fmt.Println("Total page fault ratio =", float32(mmu.PageFaultCount) / float32(mmu.AccessCount) * 100)
-	/*
-	сounter := 0
-	for proc, _ := range c.RunQ {
-	// прокручувати процеси із списку по колу
-	counter++
-	десь тут згенерувати новий робочий набір для процесу
-	if (counter % 10 == 0) {
-		
-	}
-		counter - кожну 10 ітерацію оновлює стату(скидає біти звернення R для частини сторінок, напр для наступних 10)
-		for i := 0; i < proc.NReq; i++ {
-			index := proc.GetPTEIndex()
-			mmu.AccessPage(proc.PageTable, c, index)
-		}
-	}
-	*/
-	// додати ф.-процес ядра для статистики - скадає біти звернення(R)
-	// 
 }

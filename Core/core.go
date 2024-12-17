@@ -12,9 +12,8 @@ type Core struct {
 	ReqPageMax, ReqPageMin           int
 	ReqWorkSetMax, ReqWorkSetMin     int
 	WorkSetSizeMax, WorkSetSizeMin   int
-	NReqQuantum                      int //- скільки раз він звертається до пам. за 1 раунд обслуговування, може зменшуватися після звернень
+	NReqQuantum                      int
 	replacementAlgoritm ReplacementAlgorithm
-	// додати поле кванту часу роботи процесу(скільки раз він звертається до пам. за 1 раунд обслуговування)
 }
 
 func (c *Core) Start(n int) {
@@ -44,23 +43,19 @@ func (c *Core) Start(n int) {
 	c.ReqWorkSetMin = 10
 	c.ReqWorkSetMax = 15
 	fmt.Println("System is ready to work!")
-	// can add a few processes
-	// розмір адр. простору, робочий набір, кількість звернень для генерації набору
-	// квант часу - скільки буде звернень в цьому процесі.
-	// статично - кількість сторінок
 }
 
 func (c *Core) CreateProcess() {
 	process := new(Process)
 	addressSpace := Random(c.AddressSpaceMin, c.AddressSpaceMax)
 	process.PageTable = new(PageTable)
-	process.PageTable.Entries = make([]*PTE, addressSpace) // rand val
+	process.PageTable.Entries = make([]*PTE, addressSpace) 
 	for i := 0; i < addressSpace; i++ {
 		pte := &PTE{}
 		process.PageTable.Entries[i] = pte
 	}
 	reqPageCount := Random(c.ReqPageMin, c.ReqPageMax)
-	process.NReq = reqPageCount //rand val from
+	process.NReq = reqPageCount 
 	c.RunQ = append(c.RunQ, process)
 	fmt.Println("Create process")
 	fmt.Println("LEN OF PROCCESS №", len(c.RunQ), " PAGE TABLE", len(process.PageTable.Entries))
@@ -68,9 +63,9 @@ func (c *Core) CreateProcess() {
 
 func (c *Core) GenerateWorkingSet(process *Process) {
 	workingSetCount := Random(c.ReqWorkSetMin, c.ReqWorkSetMax)
-	process.WorkingSet.PageIndexies = make([]int, workingSetCount) // rand val of working set
+	process.WorkingSet.PageIndexies = make([]int, workingSetCount)
 	for i := 0; i < workingSetCount; i++ {
-		process.WorkingSet.PageIndexies[i] = i // form 0 to PTE count
+		process.WorkingSet.PageIndexies[i] = i
 	}
 	fmt.Println("LEN OF WORKING SET", len(process.WorkingSet.PageIndexies))
 }
@@ -89,7 +84,6 @@ func (c *Core) PageFault(pageTable *PageTable, idx int) {
 		c.removeFreePage(index)
 		fmt.Println("Map free page", idx)
 	} else {
-		// Algoritm of page replacement
 		fmt.Println("LEN OF BUSY PAGES ARRAY", len(c.BusyPages))
 		c.replacementAlgoritm.ReplacePage(c, &physPage)
 	}

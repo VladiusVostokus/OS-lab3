@@ -17,5 +17,5 @@ func (p *Process) GetPTEIndex() int {
 	}
 	randIndex := Random(0, len(p.PageTable.Entries))
 	fmt.Println("Get random PTE form page table", randIndex)
-	return randIndex // some index, rand
+	return randIndex
 }
