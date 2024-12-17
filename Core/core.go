@@ -91,7 +91,7 @@ func (c *Core) PageFault(pageTable *PageTable, idx int) {
 	} else {
 		// Algoritm of page replacement
 		fmt.Println("LEN OF BUSY PAGES ARRAY", len(c.BusyPages))
-		c.replacementAlgoritm.ReplacePage(c, physPage)
+		c.replacementAlgoritm.ReplacePage(c, &physPage)
 	}
 	(*physPage).PTE = pageTable.Entries[idx]
 	pageTable.Entries[idx].PNN = (*physPage).Number
@@ -112,5 +112,6 @@ func (c *Core) UpdateStat() {
 	for i := pageUpdateFrom; i <= pageUpdateTo; i++ {
 		c.BusyPages[i].PTE.R = false
 	}
+
 	fmt.Println("UPDATE STATE OF PAGES", pageUpdateFrom," - ", pageUpdateTo)
 }
