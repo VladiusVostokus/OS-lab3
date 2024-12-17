@@ -70,10 +70,6 @@ func (c *Core) GenerateWorkingSet(process *Process) {
 	fmt.Println("LEN OF WORKING SET", len(process.WorkingSet.PageIndexies))
 }
 
-func (c *Core) GetProcess() *Process {
-	return c.RunQ[0]
-}
-
 func (c *Core) PageFault(pageTable *PageTable, idx int) {
 	var physPage **PhysicalPage
 	if len(c.FreePages) > 0 {
