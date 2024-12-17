@@ -36,8 +36,8 @@ func (c *Core) Start(n int) {
 		physPage := &PhysicalPage{PTE: pte, Number: i}
 		c.FreePages[i] = physPage
 	}
-	c.AddressSpaceMin = 30
-	c.AddressSpaceMax = 40
+	c.AddressSpaceMin = 15
+	c.AddressSpaceMax = 20
 	c.NReqQuantum = 10
 	c.ReqPageMin = 100
 	c.ReqPageMax = 150
