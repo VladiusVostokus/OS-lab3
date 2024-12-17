@@ -14,6 +14,7 @@ type Core struct {
 	WorkSetSizeMax, WorkSetSizeMin   int
 	NReqQuantum                      int
 	replacementAlgoritm ReplacementAlgorithm
+	algType string
 }
 
 func (c *Core) Start(n int) {
@@ -25,9 +26,11 @@ func (c *Core) Start(n int) {
 	if (chooseAlg >= 50) {
 		c.replacementAlgoritm = &RandomAlgorithm{}
 		fmt.Println("RANDOM ALGORITHM USED")
+		c.algType = "RANDOM"
 	} else {
 		c.replacementAlgoritm = &NRUAlgorithm{}
 		fmt.Println("NRU ALGORITHM USED")
+		c.algType = "NRU"
 	}
 
 	for i := 0; i < n; i++ {
@@ -104,4 +107,8 @@ func (c *Core) UpdateStat() {
 	}
 
 	fmt.Println("UPDATE STATE OF PAGES", pageUpdateFrom," - ", pageUpdateTo)
+}
+
+func (c *Core) PrintAlgType() {
+	fmt.Println("\t   ",c.algType, "ALGORITHM STATISTIC:")
 }
