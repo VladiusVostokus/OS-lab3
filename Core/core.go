@@ -15,6 +15,7 @@ type Core struct {
 	NReqQuantum                      int
 	replacementAlgoritm ReplacementAlgorithm
 	algType string
+	replacementCount int
 }
 
 func (c *Core) Start(n int) {
@@ -85,6 +86,7 @@ func (c *Core) PageFault(pageTable *PageTable, idx int) {
 	} else {
 		fmt.Println("LEN OF BUSY PAGES ARRAY", len(c.BusyPages))
 		c.replacementAlgoritm.ReplacePage(c, &physPage)
+		c.replacementCount++
 	}
 	(*physPage).PTE = pageTable.Entries[idx]
 	pageTable.Entries[idx].PNN = (*physPage).Number
@@ -109,6 +111,15 @@ func (c *Core) UpdateStat() {
 	fmt.Println("UPDATE STATE OF PAGES", pageUpdateFrom," - ", pageUpdateTo)
 }
 
-func (c *Core) PrintAlgType() {
+func (c *Core) PrintFinalInfo(pageFaultCount, accessCount int) {
 	fmt.Println("\t   ",c.algType, "ALGORITHM STATISTIC:")
+	fmt.Println("Total count of accesses to pages:\t", accessCount)
+	fmt.Println("Total count of page faults:\t\t", pageFaultCount)
+	fmt.Println("Total page replacement count:\t\t", c.replacementCount)
+
+	replacementToFaults := float32(c.replacementCount) / float32(pageFaultCount) * 100
+	fmt.Println("Replacement to page fault ratio:\t", replacementToFaults, "%")
+	
+	faultToAccesses := float32(pageFaultCount) / float32(accessCount) * 100
+	fmt.Println("Page fault to access count ratio:\t", faultToAccesses,"%")
 }

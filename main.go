@@ -36,8 +36,5 @@ func main() {
 			}
 		}
 	}
-	c.PrintAlgType()
-	fmt.Println("Total count of accesses to pages:", mmu.AccessCount)
-	fmt.Println("Total count of page faults:", mmu.PageFaultCount)
-	fmt.Println("Total page fault ratio =", float32(mmu.PageFaultCount) / float32(mmu.AccessCount) * 100)
+	c.PrintFinalInfo(mmu.PageFaultCount, mmu.AccessCount)
 }
