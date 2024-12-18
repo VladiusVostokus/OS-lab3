@@ -21,7 +21,7 @@ func main() {
 		for procIndex, _ := range c.RunQ {
 			proc := c.RunQ[procIndex]
 			newWorkingSetProb := core.Random(0, 100)
-			if (newWorkingSetProb <= 40) {
+			if (newWorkingSetProb <= 10) {
 				c.GenerateWorkingSet(proc)
 				fmt.Println("GENERATE NEW WORKING SET FOR PROCESS №", procIndex + 1)
 			}
